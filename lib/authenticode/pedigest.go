@@ -74,9 +74,10 @@ func DigestPE(r io.Reader, hash crypto.Hash, doPageHash bool) (*PEDigest, error)
 		if sh.SizeOfRawData == 0 {
 			continue
 		}
-		if int64(sh.PointerToRawData) != nextSection {
-			return nil, errors.New("PE sections are out of order")
-		}
+		// upx 处理过的样本会报错，跳过这个检查
+		//if int64(sh.PointerToRawData) != nextSection {
+		//	return nil, errors.New("PE sections are out of order")
+		//}
 		if err := digester.section(r, sh); err != nil {
 			return nil, err
 		}
